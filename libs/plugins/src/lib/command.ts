@@ -9,8 +9,6 @@ export abstract class BotCommand extends Composer<Context> {
     abstract run(ctx: CommandContext<Context>): Promise<void> | void;
 
     abstract auth?: BotCommandAuth;
-    // abstract auth(ctx: CommandContext<Context>): Promise<boolean> | boolean;
-    // abstract onUnauthorized(ctx: CommandContext<Context>): Promise<void> | void;
 
     constructor(name: string, description?: string) {
         super();
@@ -32,8 +30,3 @@ export abstract class BotCommand extends Composer<Context> {
         await this.run(ctx);
     }
 }
-
-// export interface BotCommand {
-//     auth?(ctx: CommandContext<Context>): Promise<boolean> | boolean;
-//     onUnauthorized?(ctx: CommandContext<Context>): Promise<void> | void;
-// }
