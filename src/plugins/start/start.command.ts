@@ -21,7 +21,4 @@ export class StartCommand extends BotCommand {
   async run(ctx: CommandContext<Context>) {
     ctx.reply("Welcome.")
   };
-  async onUnauthorized(ctx: CommandContext<Context>){
-    await ctx.reply("You are not authorized to use this command.")
-  }
 }

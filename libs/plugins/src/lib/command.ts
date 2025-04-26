@@ -2,12 +2,6 @@ import { Commands } from '@grammy-template/shared';
 import { CommandContext, Composer, Context } from "grammy";
 import { BotCommandAuth } from './auth';
 
-type TCommandRun = (ctx: CommandContext<Context>) => Promise<void>;
-// todo: move auth & onUnathorized to BotAuth/BotCommandAuth class
-type TCommandAuth = (ctx: CommandContext<Context>) => Promise<boolean>;
-type TCommandOnUnathorized = (ctx: CommandContext<Context>) => Promise<void>
-type TCommandConstructor = { name: string, run: TCommandRun, auth?: TCommandAuth, onUnauthorized?: TCommandOnUnathorized }
-
 export abstract class BotCommand extends Composer<Context> {
     name: string;
     description?: string;
