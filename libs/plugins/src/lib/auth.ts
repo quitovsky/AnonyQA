@@ -1,7 +1,9 @@
 import { CommandContext, Context } from "grammy";
 
+type TBotCommandAuth = (ctx: CommandContext<Context>) => Promise<boolean> | boolean;
+type TBotCommandAuthOnForbidden = (ctx: CommandContext<Context>) => Promise<void> | void;
+
 export abstract class BotCommandAuth {
-    // todo: types
-    abstract auth: (ctx: CommandContext<Context>) => Promise<boolean> | boolean;
-    abstract onForbidden?: (ctx: CommandContext<Context>) => Promise<void> | void;
+    abstract auth: TBotCommandAuth;
+    abstract onForbidden?: TBotCommandAuthOnForbidden;
 }
