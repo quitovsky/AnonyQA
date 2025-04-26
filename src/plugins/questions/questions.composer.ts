@@ -1,3 +1,4 @@
+import { createUserIfNotExists, prisma } from '@anonyqa/shared';
 import {
     Composer,
     Context,
@@ -13,9 +14,8 @@ composer.on('inline_query', async (ctx) => {
     const query = ctx.inlineQuery.query;
     if (!query) return;
     const id = nanoid();
-
     const result = InlineQueryResultBuilder.article(
-        'id:publish-question',
+        `publish:${id}`,
         'Опубликовать вопрос',
         {
             reply_markup: new InlineKeyboard().url(
@@ -34,5 +34,25 @@ composer.on('inline_query', async (ctx) => {
     });
     await ctx.answerInlineQuery([result], { cache_time: 0 });
 });
+
+composer.on("chosen_inline_result", async ctx => {
+    const { result_id, query } = ctx.chosenInlineResult;
+    await prisma.question.create({
+        data: {
+            nanoid: result_id.substring(8),
+            question: query,
+            author: {
+                connectOrCreate: {
+                    where: {
+                        telegramId: ctx.from.id.toString()
+                    },
+                    create: {
+                        telegramId: ctx.from.id.toString()
+                    }
+                }
+            }
+        }
+    })
+})
 
 export const QuestionsComposer = composer;
