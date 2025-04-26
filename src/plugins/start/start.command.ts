@@ -1,6 +1,7 @@
 import { BotCommand } from "@anonyqa/plugins";
 import { CommandContext, Context } from "grammy";
 import { guards } from "../../guards";
+import { prisma } from "@anonyqa/shared";
 
 export class StartCommand extends BotCommand {
   constructor(){
@@ -16,6 +17,13 @@ export class StartCommand extends BotCommand {
         const questionId = match.substring(4);
         if(!questionId || questionId.length !== 21) return;
         
+        const question = await prisma.question.findUnique({
+          where: { nanoid: questionId }
+        })
+        if(!question) {
+          ctx.reply(`Что-то пошло не так. Вопрос не найден. 😢`)
+          return;
+        }
       }
     }
     ctx.reply("Welcome.")

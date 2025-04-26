@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+  telegramId String @unique
+
+  questions Question[]
+  answers Answer[]
+}
+
+model Question {
+  id String @id @default(cuid())
+  nanoid String @unique
+
+  question String
+
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
+
+  answers Answer[]
+}
+
+model Answer {
+  id String @id @default(cuid())
+  
+  answer String
+
+  senderId String
+  sender User @relation(fields: [senderId], references: [id])
+
+  questionId String
+  question Question @relation(fields: [questionId], references: [id])
+}
