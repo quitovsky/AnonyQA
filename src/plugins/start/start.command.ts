@@ -1,6 +1,5 @@
 import { BotCommand } from "@anonyqa/plugins";
 import { CommandContext, Context } from "grammy";
-import { guards } from "../../guards";
 import { prisma } from "@anonyqa/shared";
 
 export class StartCommand extends BotCommand {

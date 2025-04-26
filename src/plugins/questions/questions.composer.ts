@@ -1,4 +1,4 @@
-import { createUserIfNotExists, prisma } from '@anonyqa/shared';
+import { prisma } from '@anonyqa/shared';
 import {
     Composer,
     Context,
