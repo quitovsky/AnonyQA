@@ -9,8 +9,10 @@
   },
   "private": true,
   "dependencies": {
+    "@prisma/client": "^6.6.0",
     "axios": "^1.6.0",
     "grammy": "^1.25.2",
+    "nanoid": "^5.1.5",
     "ts-dedent": "^2.2.0",
     "tslib": "^2.3.0"
   },
