@@ -14,9 +14,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@grammy-template/plugins": ["libs/plugins/src/index.ts"],
-      "@grammy-template/shared": ["libs/shared/src/index.ts"],
-      "@grammy-template/types": ["libs/types/src/index.ts"]
+      "@anonyqa/plugins": ["libs/plugins/src/index.ts"],
+      "@anonyqa/shared": ["libs/shared/src/index.ts"],
+      "@anonyqa/types": ["libs/types/src/index.ts"]
     },
     "esModuleInterop": true
   },

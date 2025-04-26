@@ -1,4 +1,4 @@
-import { Commands } from '@grammy-template/shared';
+import { Commands } from '@anonyqa/shared';
 import { CommandContext, Composer, Context } from "grammy";
 import { BotCommandAuth } from './auth';
 

@@ -1,4 +1,4 @@
-import { BotCommand } from "@grammy-template/plugins";
+import { BotCommand } from "@anonyqa/plugins";
 import { CommandContext, Context } from "grammy";
 import { guards } from "../../guards";
 
