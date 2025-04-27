@@ -9,6 +9,7 @@
   },
   "private": true,
   "dependencies": {
+    "@grammyjs/conversations": "^2.1.0",
     "@prisma/client": "^6.6.0",
     "axios": "^1.6.0",
     "grammy": "^1.25.2",

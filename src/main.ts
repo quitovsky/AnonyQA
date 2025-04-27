@@ -3,10 +3,13 @@ import "dotenv/config";
 const TELEGRAM_MAIN_BOT_TOKEN = process.env.TELEGRAM_MAIN_BOT_TOKEN;
 if(!TELEGRAM_MAIN_BOT_TOKEN) throw new Error("TELEGRAM_MAIN_BOT_TOKEN is not defined");
 
-import { Bot } from "grammy";
+import { Bot, Context } from "grammy";
 import { plugins } from "./plugins/plugins";
 import { Commands } from "@anonyqa/shared";
-const bot = new Bot(TELEGRAM_MAIN_BOT_TOKEN);
+import { ConversationFlavor, conversations } from "@grammyjs/conversations";
+const bot = new Bot<ConversationFlavor<Context>>(TELEGRAM_MAIN_BOT_TOKEN);
+
+bot.use(conversations())
 
 const pluginManager = new BotPluginManager(bot, plugins);
 
