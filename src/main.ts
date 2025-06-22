@@ -11,7 +11,8 @@ const bot = new Bot<ConversationFlavor<Context>>(TELEGRAM_MAIN_BOT_TOKEN);
 
 bot.use(conversations())
 
-const pluginManager = new BotPluginManager(bot, plugins);
+const pluginManager = new BotPluginManager(bot);
+pluginManager.registerPlugins(plugins);
 
 bot.api.setMyCommands(Commands.getCommands())
 
