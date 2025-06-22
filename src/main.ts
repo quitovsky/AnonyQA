@@ -14,6 +14,16 @@ bot.use(conversations())
 const pluginManager = new BotPluginManager(bot, plugins);
 
 bot.api.setMyCommands(Commands.getCommands())
+
+bot.catch(err => {
+    console.error(err)
+})
+
+process.on("uncaughtException", err => {
+    console.error(err)
+})
+
+
 bot.start({
     onStart: (me) => console.log(`Bot started as ${me.username} (https://t.me/${me.username})`)
 })

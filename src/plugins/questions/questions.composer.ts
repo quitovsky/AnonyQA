@@ -37,22 +37,27 @@ composer.on('inline_query', async (ctx) => {
 
 composer.on("chosen_inline_result", async ctx => {
     const { result_id, query } = ctx.chosenInlineResult;
-    await prisma.question.create({
-        data: {
-            nanoid: result_id.substring(8),
-            question: query,
-            author: {
-                connectOrCreate: {
-                    where: {
-                        telegramId: ctx.from.id.toString()
-                    },
-                    create: {
-                        telegramId: ctx.from.id.toString()
+    try {
+        await prisma.question.create({
+            data: {
+                nanoid: result_id.substring(8),
+                question: query,
+                author: {
+                    connectOrCreate: {
+                        where: {
+                            telegramId: ctx.from.id.toString()
+                        },
+                        create: {
+                            telegramId: ctx.from.id.toString()
+                        }
                     }
                 }
             }
-        }
-    })
+        })
+    }
+    catch {
+        ctx.editMessageText("😢 произошла ошибка при создании вопроса. попробуйте ещё раз позже")
+    }
 })
 
 export const QuestionsComposer = composer;
