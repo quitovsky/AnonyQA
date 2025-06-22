@@ -2,7 +2,6 @@ import { prisma } from '@anonyqa/shared';
 import { BotContext } from '@anonyqa/types';
 import {
     Composer,
-    Context,
     InlineKeyboard,
     InlineQueryResultBuilder,
 } from 'grammy';

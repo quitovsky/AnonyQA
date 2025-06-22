@@ -1,6 +1,6 @@
 import { BotContext } from "@anonyqa/types";
-import { Conversation, ConversationFlavor } from "@grammyjs/conversations";
-import { Composer, Context } from "grammy";
+import { Conversation } from "@grammyjs/conversations";
+import { Composer } from "grammy";
 import dedent from "ts-dedent";
 
 const composer = new Composer<BotContext>()

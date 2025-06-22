@@ -1,5 +1,5 @@
 import { Commands } from '@anonyqa/shared';
-import { CommandContext, Composer, Context } from "grammy";
+import { CommandContext, Composer } from "grammy";
 import { BotCommandAuth } from './auth';
 import { BotContext } from '@anonyqa/types';
 

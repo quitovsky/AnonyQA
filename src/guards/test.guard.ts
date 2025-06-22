@@ -1,4 +1,4 @@
-import { CommandContext, Context } from "grammy";
+import { CommandContext } from "grammy";
 import { BotCommandAuth } from "@anonyqa/plugins";
 import { BotContext } from "@anonyqa/types";
 

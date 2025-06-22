@@ -1,5 +1,5 @@
 import { BotContext } from '@anonyqa/types';
-import { CommandContext, Context } from "grammy";
+import { CommandContext } from "grammy";
 
 type TBotCommandAuth = (ctx: CommandContext<BotContext>) => Promise<boolean> | boolean;
 type TBotCommandAuthOnForbidden = (ctx: CommandContext<BotContext>) => Promise<void> | void;

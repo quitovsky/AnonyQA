@@ -1,5 +1,5 @@
 import { BotCommand } from "@anonyqa/plugins";
-import { CommandContext, Context } from "grammy";
+import { CommandContext } from "grammy";
 import { prisma } from "@anonyqa/shared";
 import { BotContext } from "@anonyqa/types";
 
