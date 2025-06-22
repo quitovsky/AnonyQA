@@ -12,6 +12,7 @@ export class StartCommand extends BotCommand {
 
   async run(ctx: CommandContext<BotContext>) {
     const match = ctx.match;
+    console.log(match)
     if (match) {
       if (match.startsWith("anon")) {
         const questionId = match.substring(4);
@@ -24,8 +25,10 @@ export class StartCommand extends BotCommand {
           ctx.reply(`Что-то пошло не так. Вопрос не найден. 😢`)
           return;
         }
+        await ctx.conversation.enter("handle-answer", questionId);
+        return;
       }
     }
-    ctx.reply("Welcome.")
+    else ctx.reply("Welcome.")
   };
 }

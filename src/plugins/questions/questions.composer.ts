@@ -27,7 +27,7 @@ composer.on('inline_query', async (ctx) => {
     ).text('', {
         parse_mode: 'HTML',
         message_text: dedent`
-        ❓ Анонимный опрос
+        ❓ анонимный опрос
 
         ${query}
         `,

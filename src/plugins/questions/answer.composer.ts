@@ -1,5 +1,6 @@
+import { prisma } from "@anonyqa/shared";
 import { BotContext } from "@anonyqa/types";
-import { Conversation } from "@grammyjs/conversations";
+import { Conversation, createConversation } from "@grammyjs/conversations";
 import { Composer } from "grammy";
 import dedent from "ts-dedent";
 
@@ -9,11 +10,67 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
     await ctx.reply(dedent`
         💭 Напиши свой ответ
         `)
-    const { message } = await conversation.waitFor("message");
-    console.log("msg", message)
+    let text = null;
+    while (!text) {
+        const { message } = await conversation.waitFor("message");
+        if (!message.text) {
+            await ctx.reply(dedent`
+                бот на данный момент принимает только текстовые ответы 😢
+
+                следи за обновлениями в канале, а пока напиши свой ответ:
+                `)
+        } else {
+            text = message.text
+        }
+    }
+    const question = await prisma.question.findUnique({
+        where: {
+            nanoid: questionId
+        },
+        include: {
+            author: true
+        }
+    })
+    if (!question) return ctx.reply("что-то пошло не так... 😢");
+
+    const answer = await prisma.answer.create({
+        data: {
+            answer: text,
+            question: {
+                connect: {
+                    id: question.id
+                }
+            },
+            sender: {
+                connectOrCreate: {
+                    create: {
+                        telegramId: ctx.from.id.toString()
+                    },
+                    where: {
+                        telegramId: ctx.from.id.toString()
+                    }
+                }
+            }
+        }
+    })
+    if (!answer) return ctx.reply("что-то пошло не так... 😢");
+
+    await ctx.api.sendMessage(question.author.telegramId, dedent`
+        ★ анонимный ответ на вопрос
+
+        ❓: ${question.question}
+        💌: ${answer.answer}
+        `);
+    
+    await ctx.reply(`ответ отправлен!`)
+
 
     return
 }
+
+composer.use(createConversation(answer, {
+    id: "handle-answer",
+}))
 
 
 export const AnswerComposer = composer;
