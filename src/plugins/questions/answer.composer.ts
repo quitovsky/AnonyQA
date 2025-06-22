@@ -15,10 +15,15 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
         const { message } = await conversation.waitFor("message");
         if (!message.text) {
             await ctx.reply(dedent`
-                бот на данный момент принимает только текстовые ответы 😢
+                бот на данный момент принимает только <i>текстовые ответы</i> 😢
 
-                следи за обновлениями в канале, а пока напиши свой ответ:
-                `)
+                следи за обновлениями <b><a href="https://t.me/wannadisappearr">в канале</a></b>, а пока напиши свой ответ:
+                `, {
+                    parse_mode: "HTML",
+                    link_preview_options: {
+                        is_disabled: true
+                    }
+                })
         } else {
             text = message.text
         }
