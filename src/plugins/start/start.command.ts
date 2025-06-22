@@ -2,6 +2,7 @@ import { BotCommand } from "@anonyqa/plugins";
 import { CommandContext } from "grammy";
 import { prisma } from "@anonyqa/shared";
 import { BotContext } from "@anonyqa/types";
+import dedent from "ts-dedent";
 
 export class StartCommand extends BotCommand {
   constructor(){
@@ -13,7 +14,7 @@ export class StartCommand extends BotCommand {
   async run(ctx: CommandContext<BotContext>) {
     const match = ctx.match;
     console.log(match)
-    if (match) {
+    if (match && match !== "start") {
       if (match.startsWith("anon")) {
         const questionId = match.substring(4);
         if(!questionId || questionId.length !== 21) return;
@@ -29,6 +30,18 @@ export class StartCommand extends BotCommand {
         return;
       }
     }
-    else ctx.reply("Welcome.")
+    else ctx.reply(dedent`
+      <b>привет! ^_^</b>
+      
+      чтобы опубликовать вопрос, напиши в <i>поле ввода публикации в канале</i>:
+      <blockquote>@anonyqabot &lt;вопрос&gt;</blockquote>
+      и нажмии <b><i>«опубликовать вопрос»</i></b>
+
+
+      <i><u>новости бота и не только → @wannadisappearr
+      по всем вопросам → @wdpprr</u></i>
+      `, {
+        parse_mode: "HTML"
+      })
   };
 }
