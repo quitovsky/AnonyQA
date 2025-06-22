@@ -55,12 +55,14 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
     })
     if (!answer) return ctx.reply("что-то пошло не так... 😢");
 
+    try { 
     await ctx.api.sendMessage(question.author.telegramId, dedent`
         ★ анонимный ответ на вопрос
 
         ❓: ${question.question}
         💌: ${answer.answer}
         `);
+    } catch { /**/ }
     
     await ctx.reply(`ответ отправлен!`)
 
