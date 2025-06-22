@@ -1,2 +1,2 @@
 export * from './lib/commands';
-export * from "./lib/db"
+export * from "./lib/db";

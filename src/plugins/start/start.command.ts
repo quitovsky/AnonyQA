@@ -1,6 +1,7 @@
 import { BotCommand } from "@anonyqa/plugins";
 import { CommandContext, Context } from "grammy";
 import { prisma } from "@anonyqa/shared";
+import { BotContext } from "@anonyqa/types";
 
 export class StartCommand extends BotCommand {
   constructor(){
@@ -9,7 +10,7 @@ export class StartCommand extends BotCommand {
   // todo why tf does it require to set it manually 😭😭
   auth = null;
 
-  async run(ctx: CommandContext<Context>) {
+  async run(ctx: CommandContext<BotContext>) {
     const match = ctx.match;
     if (match) {
       if (match.startsWith("anon")) {

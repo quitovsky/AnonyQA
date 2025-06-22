@@ -1,15 +1,19 @@
-import { Conversation } from "@grammyjs/conversations";
+import { BotContext } from "@anonyqa/types";
+import { Conversation, ConversationFlavor } from "@grammyjs/conversations";
 import { Composer, Context } from "grammy";
 import dedent from "ts-dedent";
 
-const composer = new Composer<Context>()
+const composer = new Composer<BotContext>()
 
-async function answer(conversation: Conversation, ctx: Context, questionId: string) {
+async function answer(conversation: Conversation, ctx: BotContext, questionId: string) {
     await ctx.reply(dedent`
         💭 Напиши свой ответ
         `)
-    const { message } = await conversation.waitFor("message:text");
-    
+    const { message } = await conversation.waitFor("message");
+    console.log("msg", message)
+
+    return
 }
+
 
 export const AnswerComposer = composer;

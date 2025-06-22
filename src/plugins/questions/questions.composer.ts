@@ -1,4 +1,5 @@
 import { prisma } from '@anonyqa/shared';
+import { BotContext } from '@anonyqa/types';
 import {
     Composer,
     Context,
@@ -8,7 +9,7 @@ import {
 import { nanoid } from 'nanoid';
 import dedent from 'ts-dedent';
 
-const composer = new Composer<Context>();
+const composer = new Composer<BotContext>();
 
 composer.on('inline_query', async (ctx) => {
     const query = ctx.inlineQuery.query;

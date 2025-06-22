@@ -7,7 +7,8 @@ import { Bot, Context } from "grammy";
 import { plugins } from "./plugins/plugins";
 import { Commands } from "@anonyqa/shared";
 import { ConversationFlavor, conversations } from "@grammyjs/conversations";
-const bot = new Bot<ConversationFlavor<Context>>(TELEGRAM_MAIN_BOT_TOKEN);
+import { BotContext } from "@anonyqa/types";
+const bot = new Bot<BotContext>(TELEGRAM_MAIN_BOT_TOKEN);
 
 bot.use(conversations())
 
