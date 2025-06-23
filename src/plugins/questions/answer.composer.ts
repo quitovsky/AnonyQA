@@ -1,7 +1,7 @@
 import { prisma } from "@anonyqa/shared";
 import { BotContext } from "@anonyqa/types";
 import { Conversation, createConversation } from "@grammyjs/conversations";
-import { Composer } from "grammy";
+import { Composer, InlineKeyboard } from "grammy";
 import dedent from "ts-dedent";
 
 const composer = new Composer<BotContext>()
@@ -20,10 +20,16 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
         💭 напиши свой ответ
 
         ❓: ${question.question}
-        `)
+        `, {
+            reply_markup: new InlineKeyboard().text("⨯ отменить", "cancel-answer")
+        })
     let text = null;
     while (!text) {
-        const { message } = await conversation.waitFor("message");
+        const { message, callbackQuery } = await conversation.waitFor(["message", "callback_query"]);
+        if(callbackQuery?.data && callbackQuery.data === "cancel-answer") {
+            await ctx.api.deleteMessage(ctx.chatId, callbackQuery.message.message_id)
+            return;
+        }
         if (!message.text) {
             await ctx.reply(dedent`
                 бот на данный момент принимает только <i>текстовые ответы</i> 😢
@@ -80,6 +86,13 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
 composer.use(createConversation(answer, {
     id: "handle-answer",
 }))
+
+composer.callbackQuery("cancel-answer", async ctx => {
+    console.log("123")
+    await ctx.deleteMessage();
+    await ctx.conversation.exitAll()
+    return;
+})
 
 
 export const AnswerComposer = composer;
