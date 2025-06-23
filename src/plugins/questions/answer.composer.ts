@@ -99,7 +99,6 @@ composer.use(createConversation(answer, {
 }))
 
 composer.callbackQuery("cancel-answer", async ctx => {
-    console.log("123")
     await ctx.deleteMessage();
     await ctx.conversation.exitAll()
     return;

@@ -13,7 +13,6 @@ export class StartCommand extends BotCommand {
 
   async run(ctx: CommandContext<BotContext>) {
     const match = ctx.match;
-    console.log(match)
     if (match && match !== "start") {
       if (match.startsWith("anon")) {
         const questionId = match.substring(4);
