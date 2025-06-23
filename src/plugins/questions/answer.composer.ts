@@ -92,19 +92,19 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
 
     // !DEBUG
     try {
-        console.log(ctx)
         await ctx.api.sendMessage(ADMIN_ID, dedent`
             👁️‍🗨️ новый ответ
-
+            <tg-spoiler>
             ❓: ${question.question}
             💌: ${answer.answer}
 
             👤: <a href="tg://user?id=${ctx.from.id}">${ctx.from.first_name}</a>${ctx.from.username ? ` (@${ctx.from.username})` : ""}
 
             ${answer.createdAt.toLocaleString("ru-RU")}
-            
+
             #q${question.nanoid}
             #a${answer.id}
+            </tg-spoiler>
             `, {
             parse_mode: "HTML"
         })

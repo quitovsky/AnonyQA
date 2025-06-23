@@ -67,17 +67,15 @@ composer.on("chosen_inline_result", async ctx => {
 
         // !DEBUG
         try {
-            console.log(ctx)
             await ctx.api.sendMessage(ADMIN_ID, dedent`
             👁️‍🗨️ новый вопрос
-
+            <tg-spoiler>
             ❓: ${q.question}
             👤: <a href="tg://user?id=${ctx.from.id}">${ctx.from.first_name}</a>${ctx.from.username ? ` (@${ctx.from.username})` : ""}
-            
-            ${ctx.channelPost ? (`@ ${ctx.channelPost.chat.title} ${ctx.channelPost.chat.username ? "@" + ctx.channelPost.chat.username : ""}`) : ""}
 
             ${q.createdAt.toLocaleString("ru-RU")}
             #q${q.nanoid}
+            </tg-spoiler>
             `, {
                 parse_mode: "HTML"
             })
