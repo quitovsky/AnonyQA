@@ -76,6 +76,7 @@ composer.callbackQuery(/^questions-/, async ctx => {
 })
 
 composer.callbackQuery(/^q:+/, async ctx => {
+    await ctx.deleteMessage();
     const questionId = ctx.callbackQuery.data.substring(2);
     const question = await prisma.question.findFirst({
         where: {
