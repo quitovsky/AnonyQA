@@ -8,7 +8,7 @@ const composer = new Composer<BotContext>()
 
 async function answer(conversation: Conversation, ctx: BotContext, questionId: string) {
     await ctx.reply(dedent`
-        💭 Напиши свой ответ
+        💭 напиши свой ответ
         `)
     let text = null;
     while (!text) {
