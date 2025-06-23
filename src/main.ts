@@ -8,8 +8,10 @@ import { plugins } from "./plugins/plugins";
 import { Commands } from "@anonyqa/shared";
 import { conversations } from "@grammyjs/conversations";
 import { BotContext } from "@anonyqa/types";
+import { contextMiddleware } from "./middlewares/context.middleware";
 const bot = new Bot<BotContext>(TELEGRAM_MAIN_BOT_TOKEN);
 
+bot.use(contextMiddleware)
 bot.use(conversations())
 
 const pluginManager = new BotPluginManager(bot);
