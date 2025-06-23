@@ -94,7 +94,8 @@ composer.callbackQuery(/^q:+/, async ctx => {
 
         <i>создан ${question.createdAt.toLocaleString('ru-RU')}</i>
         `, {
-            parse_mode: "HTML"
+            parse_mode: "HTML",
+            reply_markup: new InlineKeyboard().text("← назад", "questions-0")
         })
 })
 
