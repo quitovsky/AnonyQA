@@ -33,7 +33,7 @@ export class StartCommand extends BotCommand {
       <b>привет! ^_^</b>
       
       чтобы опубликовать вопрос, напиши в <i>поле ввода публикации в канале</i>:
-      <blockquote>@anonyqabot &lt;вопрос&gt;</blockquote>
+      <blockquote><b>@anonyqabot</b> <i>&lt;вопрос&gt;</i></blockquote>
       и нажмии <b><i>«опубликовать вопрос»</i></b>
 
 
