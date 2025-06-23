@@ -5,7 +5,7 @@ import dedent from "ts-dedent";
 
 export class ProfileCommand extends BotCommand {
     constructor() {
-        super("profile")
+        super("profile", "профиль")
     }
 
     auth = null;

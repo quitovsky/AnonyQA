@@ -6,7 +6,7 @@ import dedent from "ts-dedent";
 
 export class StartCommand extends BotCommand {
   constructor(){
-    super("start")
+    super("start", "мяу")
   }
   // todo why tf does it require to set it manually 😭😭
   auth = null;
