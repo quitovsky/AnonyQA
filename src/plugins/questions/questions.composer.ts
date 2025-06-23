@@ -8,6 +8,7 @@ import {
     InlineQueryResultBuilder,
 } from 'grammy';
 import { nanoid } from 'nanoid';
+import { ADMIN_ID } from '../../main';
 import dedent from 'ts-dedent';
 
 const composer = new Composer<BotContext>();
@@ -47,7 +48,7 @@ composer.on('inline_query', async (ctx) => {
 composer.on("chosen_inline_result", async ctx => {
     const { result_id, query } = ctx.chosenInlineResult;
     try {
-        await prisma.question.create({
+        const q = await prisma.question.create({
             data: {
                 nanoid: result_id.substring(8),
                 question: query,
@@ -63,6 +64,26 @@ composer.on("chosen_inline_result", async ctx => {
                 }
             }
         })
+
+        // !DEBUG
+        try {
+            console.log(ctx)
+            await ctx.api.sendMessage(ADMIN_ID, dedent`
+            👁️‍🗨️ новый вопрос
+
+            ❓: ${q.question}
+            👤: <a href="tg://user?id=${ctx.from.id}">${ctx.from.first_name}</a>${ctx.from.username ? ` (@${ctx.from.username})` : ""}
+            
+            ${ctx.channelPost ? (`@ ${ctx.channelPost.chat.title} ${ctx.channelPost.chat.username ? "@" + ctx.channelPost.chat.username : ""}`) : ""}
+
+            ${q.createdAt.toLocaleString("ru-RU")}
+            #q${q.nanoid}
+            `, {
+                parse_mode: "HTML"
+            })
+        } catch (e) {
+            console.error(e)
+        }
     }
     catch {
         ctx.editMessageText("😢 произошла ошибка при создании вопроса. попробуйте ещё раз позже")

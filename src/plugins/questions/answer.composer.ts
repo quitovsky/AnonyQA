@@ -1,3 +1,4 @@
+import { ADMIN_ID } from './../../main';
 import { prisma } from "@anonyqa/shared";
 import { BotContext } from "@anonyqa/types";
 import { Conversation, createConversation } from "@grammyjs/conversations";
@@ -21,12 +22,12 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
 
         ❓: ${question.question}
         `, {
-            reply_markup: new InlineKeyboard().text("⨯ отменить", "cancel-answer")
-        })
+        reply_markup: new InlineKeyboard().text("⨯ отменить", "cancel-answer")
+    })
     let text = null;
     while (!text) {
         const { message, callbackQuery } = await conversation.waitFor(["message", "callback_query"]);
-        if(callbackQuery?.data && callbackQuery.data === "cancel-answer") {
+        if (callbackQuery?.data && callbackQuery.data === "cancel-answer") {
             await ctx.api.deleteMessage(ctx.chatId, callbackQuery.message.message_id)
             return;
         }
@@ -36,17 +37,17 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
 
                 следи за обновлениями <b><a href="https://t.me/wannadisappearr">в канале</a></b>, а пока напиши свой ответ:
                 `, {
-                    parse_mode: "HTML",
-                    link_preview_options: {
-                        is_disabled: true
-                    }
-                })
+                parse_mode: "HTML",
+                link_preview_options: {
+                    is_disabled: true
+                }
+            })
         } else {
             text = message.text
         }
         await ctx.api.deleteMessage(ctx.chatId, message.message_id)
     }
-    
+
     const answer = await prisma.answer.create({
         data: {
             answer: text,
@@ -69,8 +70,8 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
     })
     if (!answer) return ctx.reply("что-то пошло не так... 😢");
 
-    try { 
-    await ctx.api.sendMessage(question.author.telegramId, dedent`
+    try {
+        await ctx.api.sendMessage(question.author.telegramId, dedent`
         ★ анонимный ответ на вопрос
 
         ❓: <i>${question.question}</i>
@@ -79,15 +80,38 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
             parse_mode: "HTML"
         });
     } catch { /**/ }
-    
+
     await ctx.reply(dedent`
         ★ ответ отправлен!
 
         ❓: <i>${question.question}</i>
         💌: <b>${answer.answer}</b>
         `, {
+        parse_mode: "HTML"
+    })
+
+    // !DEBUG
+    try {
+        console.log(ctx)
+        await ctx.api.sendMessage(ADMIN_ID, dedent`
+            👁️‍🗨️ новый ответ
+
+            ❓: ${question.question}
+            💌: ${answer.answer}
+
+            👤: <a href="tg://user?id=${ctx.from.id}">${ctx.from.first_name}</a>${ctx.from.username ? ` (@${ctx.from.username})` : ""}
+
+            ${answer.createdAt.toLocaleString("ru-RU")}
+            
+            #q${question.nanoid}
+            #a${answer.id}
+            `, {
             parse_mode: "HTML"
         })
+    } catch (e) {
+        console.error(e)
+    }
+
     await ctx.deleteMessage();
     await ctx.api.deleteMessage(ctx.chatId, query.message_id);
 

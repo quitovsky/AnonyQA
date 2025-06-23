@@ -1,6 +1,7 @@
 import { BotPluginManager } from "@anonyqa/plugins";
 import "dotenv/config";
 const TELEGRAM_MAIN_BOT_TOKEN = process.env.TELEGRAM_MAIN_BOT_TOKEN;
+export const ADMIN_ID = process.env.DEBUG_ADMIN_ID
 if(!TELEGRAM_MAIN_BOT_TOKEN) throw new Error("TELEGRAM_MAIN_BOT_TOKEN is not defined");
 
 import { Bot } from "grammy";
