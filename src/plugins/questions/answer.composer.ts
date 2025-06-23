@@ -7,8 +7,19 @@ import dedent from "ts-dedent";
 const composer = new Composer<BotContext>()
 
 async function answer(conversation: Conversation, ctx: BotContext, questionId: string) {
+    const question = await prisma.question.findUnique({
+        where: {
+            nanoid: questionId
+        },
+        include: {
+            author: true
+        }
+    })
+    if (!question) return ctx.reply("что-то пошло не так... 😢");
     await ctx.reply(dedent`
         💭 напиши свой ответ
+
+        ❓: ${question.question}
         `)
     let text = null;
     while (!text) {
@@ -28,16 +39,7 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
             text = message.text
         }
     }
-    const question = await prisma.question.findUnique({
-        where: {
-            nanoid: questionId
-        },
-        include: {
-            author: true
-        }
-    })
-    if (!question) return ctx.reply("что-то пошло не так... 😢");
-
+    
     const answer = await prisma.answer.create({
         data: {
             answer: text,
