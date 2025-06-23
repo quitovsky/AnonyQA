@@ -92,7 +92,7 @@ composer.callbackQuery(/^q:+/, async ctx => {
         ❓: ${question.question}
         💌: <i>${declineAnswers(count)}</i>
 
-        <i>создан ${question.createdAt.toLocaleString('ru-RU')}</i>}
+        <i>создан ${question.createdAt.toLocaleString('ru-RU')}</i>
         `, {
             parse_mode: "HTML"
         })
