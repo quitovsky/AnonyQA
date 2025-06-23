@@ -11,7 +11,7 @@ export class ProfileCommand extends BotCommand {
     auth = null;
     
     async run(ctx: CommandContext<BotContext>): Promise<void> {
-        const reply_markup = new InlineKeyboard().text("❓ мои вопросы", "questions")
+        const reply_markup = new InlineKeyboard().text("❓ мои вопросы", "questions-0")
         await ctx.reply(dedent`
             ⋆ твой профиль:
             `, {
