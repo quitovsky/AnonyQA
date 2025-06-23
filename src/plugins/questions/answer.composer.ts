@@ -16,7 +16,7 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
         }
     })
     if (!question) return ctx.reply("что-то пошло не так... 😢");
-    await ctx.reply(dedent`
+    const query = await ctx.reply(dedent`
         💭 напиши свой ответ
 
         ❓: ${question.question}
@@ -44,6 +44,7 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
         } else {
             text = message.text
         }
+        await ctx.api.deleteMessage(ctx.chatId, message.message_id)
     }
     
     const answer = await prisma.answer.create({
@@ -72,13 +73,23 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
     await ctx.api.sendMessage(question.author.telegramId, dedent`
         ★ анонимный ответ на вопрос
 
-        ❓: ${question.question}
-        💌: ${answer.answer}
-        `);
+        ❓: <i>${question.question}</i>
+        💌: <b>${answer.answer}</b>
+        `, {
+            parse_mode: "HTML"
+        });
     } catch { /**/ }
     
-    await ctx.reply(`ответ отправлен!`)
+    await ctx.reply(dedent`
+        ★ ответ отправлен!
 
+        ❓: <i>${question.question}</i>
+        💌: <b>${answer.answer}</b>
+        `, {
+            parse_mode: "HTML"
+        })
+    await ctx.deleteMessage();
+    await ctx.api.deleteMessage(ctx.chatId, query.message_id);
 
     return
 }
