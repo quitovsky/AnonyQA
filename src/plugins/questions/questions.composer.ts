@@ -43,7 +43,6 @@ composer.on('inline_query', async (ctx) => {
 });
 
 composer.on("chosen_inline_result", async ctx => {
-    console.log(ctx)
     const { result_id, query } = ctx.chosenInlineResult;
     await ctx.editMessageText(dedent`
         ❓ анонимный вопрос
