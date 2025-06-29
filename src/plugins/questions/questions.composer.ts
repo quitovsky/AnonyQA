@@ -25,13 +25,13 @@ composer.on('inline_query', async (ctx) => {
     const id = nanoid();
     const result = InlineQueryResultBuilder.article(
         `publish:${id}`,
-        'опубликовать вопрос',
+        `❓ ${ctx.inlineQuery.query}`,
         {
             reply_markup: new InlineKeyboard().url(
                 'как использовать бота',
                 'https://t.me/anonyqabot?start=faq'
             ),
-            description: ctx.inlineQuery.query,
+            description: `если в канале включено подпсывание сообщений, убедись, что сообщение отправляется не от имени канала`,
         }
     ).text('', {
         parse_mode: 'HTML',
