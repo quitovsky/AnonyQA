@@ -1,9 +1,7 @@
 import { prisma } from '@anonyqa/shared';
 import { BotContext } from '@anonyqa/types';
 import {
-    BotError,
     Composer,
-    GrammyError,
     InlineKeyboard,
     InlineQueryResultBuilder,
 } from 'grammy';
@@ -15,7 +13,7 @@ const composer = new Composer<BotContext>();
 
 composer.on('inline_query', async (ctx) => {
     try {
-        const chat = await ctx.api.sendChatAction(ctx.from.id, "find_location");
+        await ctx.api.sendChatAction(ctx.from.id, "find_location");
     } catch (err) {
         return await ctx.answerInlineQuery([], {
             button: { text: "нажми, чтобы начать ^_^", start_parameter: "start" },
