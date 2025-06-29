@@ -31,10 +31,6 @@ composer.on('inline_query', async (ctx) => {
                 'как использовать бота',
                 'https://t.me/anonyqabot?start=faq'
             ),
-            // reply_markup: new InlineKeyboard().url(
-            //     'как использовать бота',
-            //     `https://t.me/anonyqabot?start=anon${id}`
-            // ),
             description: ctx.inlineQuery.query,
         }
     ).text('', {
@@ -42,11 +38,6 @@ composer.on('inline_query', async (ctx) => {
         message_text: dedent`
         ❗️ для работы бота необходимо публиковать вопрос от своего имени
         `
-        // message_text: dedent`
-        // ❓ анонимный опрос
-
-        // ${query}
-        // `,
     });
     await ctx.answerInlineQuery([result], { cache_time: 0 });
 });
