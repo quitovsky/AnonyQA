@@ -3,6 +3,7 @@ import { CommandContext } from "grammy";
 import { prisma } from "@anonyqa/shared";
 import { BotContext } from "@anonyqa/types";
 import dedent from "ts-dedent";
+import { faq } from "./faq";
 
 export class StartCommand extends BotCommand {
   constructor(){
@@ -27,6 +28,9 @@ export class StartCommand extends BotCommand {
         }
         await ctx.conversation.enter("handle-answer", questionId);
         return;
+      }
+      else if (match === "faq") {
+        return await faq(ctx);
       }
     }
     else ctx.reply(dedent`
