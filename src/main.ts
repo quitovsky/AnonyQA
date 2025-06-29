@@ -12,10 +12,10 @@ import { BotContext } from "@anonyqa/types";
 import { contextMiddleware } from "./middlewares/context.middleware";
 const bot = new Bot<BotContext>(TELEGRAM_MAIN_BOT_TOKEN);
 
-bot.use(async (ctx, next) => {
-    console.log(ctx)
-    await next()
-})
+// bot.use(async (ctx, next) => {
+//     console.log(ctx)
+//     await next()
+// })
 
 bot.use(contextMiddleware)
 bot.use(conversations())

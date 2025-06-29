@@ -25,21 +25,28 @@ composer.on('inline_query', async (ctx) => {
     const id = nanoid();
     const result = InlineQueryResultBuilder.article(
         `publish:${id}`,
-        'Опубликовать вопрос',
+        'опубликовать вопрос',
         {
             reply_markup: new InlineKeyboard().url(
-                'ответить анонимно',
-                `https://t.me/anonyqabot?start=anon${id}`
+                'как использовать бота',
+                'https://t.me/anonyqabot?start=faq'
             ),
+            // reply_markup: new InlineKeyboard().url(
+            //     'как использовать бота',
+            //     `https://t.me/anonyqabot?start=anon${id}`
+            // ),
             description: ctx.inlineQuery.query,
         }
     ).text('', {
         parse_mode: 'HTML',
         message_text: dedent`
-        ❓ анонимный опрос
+        ❗️ для работы бота необходимо публиковать вопрос от своего имени
+        `
+        // message_text: dedent`
+        // ❓ анонимный опрос
 
-        ${query}
-        `,
+        // ${query}
+        // `,
     });
     await ctx.answerInlineQuery([result], { cache_time: 0 });
 });
@@ -47,6 +54,17 @@ composer.on('inline_query', async (ctx) => {
 composer.on("chosen_inline_result", async ctx => {
     console.log(ctx)
     const { result_id, query } = ctx.chosenInlineResult;
+    await ctx.editMessageText(dedent`
+        ❓ анонимный вопрос
+        
+        ${query}
+        `, {
+            reply_markup: new InlineKeyboard()
+                .url(
+                    `ответить анонимно`,
+                    `https://t.me/anonyqabot?start=anon${result_id.substring(8)}`
+                )
+        })
     try {
         const q = await prisma.question.create({
             data: {
