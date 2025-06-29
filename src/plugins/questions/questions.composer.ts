@@ -18,7 +18,8 @@ composer.on('inline_query', async (ctx) => {
         const chat = await ctx.api.sendChatAction(ctx.from.id, "find_location");
     } catch (err) {
         return await ctx.answerInlineQuery([], {
-            button: { text: "нажми, чтобы начать ^_^", start_parameter: "start" }
+            button: { text: "нажми, чтобы начать ^_^", start_parameter: "start" },
+            is_personal: true 
         })
     }
     const query = ctx.inlineQuery.query;
@@ -46,6 +47,7 @@ composer.on('inline_query', async (ctx) => {
 });
 
 composer.on("chosen_inline_result", async ctx => {
+    console.log(ctx)
     const { result_id, query } = ctx.chosenInlineResult;
     try {
         const q = await prisma.question.create({
@@ -83,8 +85,9 @@ composer.on("chosen_inline_result", async ctx => {
             console.error(e)
         }
     }
-    catch {
-        ctx.editMessageText("😢 произошла ошибка при создании вопроса. попробуйте ещё раз позже")
+    catch (err) {
+        console.error(err)
+        await ctx.editMessageText("😢 произошла ошибка при создании вопроса. попробуйте ещё раз позже")
     }
 })
 

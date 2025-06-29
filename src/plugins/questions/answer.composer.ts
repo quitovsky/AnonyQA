@@ -7,7 +7,9 @@ import dedent from "ts-dedent";
 
 const composer = new Composer<BotContext>()
 
-async function answer(conversation: Conversation, ctx: BotContext, questionId: string) {
+async function answer(conversation: Conversation, ctx: BotContext, _questionId: string) {
+    const checkpoint = await conversation.checkpoint()
+    let questionId = _questionId;
     const question = await prisma.question.findUnique({
         where: {
             nanoid: questionId
@@ -17,6 +19,7 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
         }
     })
     if (!question) return ctx.reply("что-то пошло не так... 😢");
+    if (question.author.telegramId === ctx.from.id.toString()) return await ctx.reply("нельзя отвечать на свой вопрос 🥹")
     const query = await ctx.reply(dedent`
         💭 напиши свой ответ
 
@@ -43,7 +46,47 @@ async function answer(conversation: Conversation, ctx: BotContext, questionId: s
                 }
             })
         } else {
-            text = message.text
+            if (message.text.startsWith("/start")) {
+                questionId = message.text.substring(11);
+                if (!questionId || questionId.length !== 21) return;
+
+                const _question = await prisma.question.findUnique({
+                    where: { nanoid: questionId }
+                })
+                if (!_question) {
+                    ctx.reply(`Что-то пошло не так. Вопрос не найден. 😢`)
+                    return;
+                }
+                await conversation.rewind(checkpoint)
+            }
+            const msg = await ctx.reply(dedent`
+                ❓: ${question.question}
+                📤: ${message.text}
+                `, {
+                reply_markup: new InlineKeyboard()
+                    .text("✍🏻 изменить", "change")
+                    .text("✔️ отправить", "send")
+            })
+
+            let choice = "";
+            
+            while(choice === "") {
+                const cb = await conversation.waitFor(["message", "callback_query"]);
+                if(!cb.callbackQuery?.data && !cb.message.from.is_bot) {
+                    await ctx.api.deleteMessage(cb.chatId, cb.message.message_id)
+                }
+                else if(cb.callbackQuery?.data === "change" || cb.callbackQuery?.data === "send") {
+                    choice = cb.callbackQuery.data
+                }
+            }
+
+            if (choice === "change") {
+                await ctx.api.deleteMessage(msg.chat.id, msg.message_id)
+                text = null
+            } else if (choice === "send") {
+                await ctx.api.deleteMessage(msg.chat.id, msg.message_id)
+                text = message.text;
+            }
         }
         await ctx.api.deleteMessage(ctx.chatId, message.message_id)
     }
